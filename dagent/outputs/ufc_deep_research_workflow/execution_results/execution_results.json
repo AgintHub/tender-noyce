@@ -1,0 +1,68 @@
+{
+  "analyze_fight_card_performance_metrics": {
+    "output": {
+      "output": "Given the context and parent node output, relevant performance metrics for individual fight cards in this project include win ratio, knockout ratio, and submission ratio. These metrics were derived from the UFC fight cards, their details, and the opponents' fight history, as well as statistics on fight order, weight classes, and fight times."
+    },
+    "description": "Calculate and analyze various performance metrics for individual fight cards, including win ratio, knockout ratio, and submission ratio."
+  },
+  "analyze_fight_card_statistics": {
+    "output": {
+      "output": "Key statistics on fight cards relevant to this project include fight order, weight classes, and fight times to calculate and analyze various performance metrics, such as win ratio, knockout ratio, and submission ratio.  The UFC fight cards to gather data from include fight details, as well as the opponents' fight history. It would be ideal to analyze these statistics in a tabular format, either within Excel or a pandas DataFrame for further analysis and filtering of key performance metrics in relation to fighters' overall performance."
+    },
+    "description": "Collect and analyze statistics on fight cards, including fight order, weight classes, and fight times."
+  },
+  "analyze_fighter_performance_metrics": {
+    "output": {
+      "output": "The relevant performance metrics for individual fighters in this project include: win ratio, knockout ratio, and submission ratio. Win ratio is essential in evaluating the fighters' efficiency in winning matches. Knockout ratio can provide insight into the fighters' fighting styles and strategies. Submission ratio will also offer valuable information, enabling us to identify fighters with high submission rates or those who are more susceptible to submissions. These statistics will support the analysis of fighter performance and contribute to the development of detailed profiles."
+    },
+    "description": "Calculate and analyze various performance metrics for individual fighters, including win ratio, knockout ratio, and submission ratio."
+  },
+  "analyze_fighter_statistics": {
+    "output": {
+      "output": "The key statistics on individual fighters relevant to this project include: win-loss records, fight times, and submission ratios. This information is essential to analyze and understand the performance of UFC fighters. \n    We can aggregate win-loss records to calculate overall win percentages and evaluate the fighters' efficiency in winning matches. \n    Fight times can provide insight into the fighters' fighting styles and strategies, with some fighters specializing in quick knockouts and others focusing on grappling and submission holds. \n    Submission ratios will also offer valuable information, enabling us to identify fighters with high submission rates or those who are more susceptible to submissions. \n    These statistics will support the analysis of fighter performance in 'analyze_fighter_performance_metrics' and contribute to the development of detailed profiles in 'develop_fighter_profiles'."
+    },
+    "description": "Collect and analyze statistics on individual fighters, including win-loss records, fight times, and submission ratios."
+  },
+  "conduct_literature_review": {
+    "output": {
+      "output": "Potential key findings from existing research on UFC fighters and mixed martial arts include the importance of cardio conditioning, striking techniques, and submissions in determining fight outcomes, as well as the role of mental preparation and strategy in achieving success. Some relevant theories and ideas include the concept of 'fight IQ' and the strategic use of weight classes to gain a competitive advantage."
+    },
+    "description": "Review and analyze existing research on the topic."
+  },
+  "create_research_report": {
+    "output": {
+      "output": "This comprehensive report synthesizes the research findings from analyzing UFC fight cards and their performances. Key conclusions include: \n\nFighter performance metrics such as win ratio, knockout ratio, and submission ratio play a vital role in evaluating fighter efficiency. An analysis of individual fighter profiles and performance statistics indicates that win ratio is essential for determining a fighter's strength, while knockout and submission ratios provide insight into their fighting style and strategies.\n\nFight card performance metrics, including win ratio, knockout ratio, and submission ratio, are also critical in understanding the competitive landscape of a fight card. An examination of these metrics, in combination with fight-specific attributes such as fight order, weight classes, and odds, enables us to make informed predictions about the outcome of fights.\n\nBased on these findings, the following recommendations are made:\n\nDevelop and utilize machine learning models that integrate fighter performance metrics and fight card performance metrics to accurately predict fight outcomes.\nPrioritize the development of detailed fighter profiles that capture their performance statistics, fighting styles, and strategies.\nLeverage the analysis of fighter performance metrics and fight card performance metrics to inform betting strategies and make more informed decisions.\nDevelop and utilize data visualization tools to effectively communicate insights and results to stakeholders."
+    },
+    "description": "Compile and synthesize the research findings into a comprehensive report."
+  },
+  "define_research_objectives": {
+    "output": {
+      "output": "The main purpose of this research project is to understand and identify the specific research goals and objectives related to UFC-related deep research. We aim to investigate a range of topics, including key concepts, methodologies, and existing knowledge in the field."
+    },
+    "description": "Identify the specific research goals and objectives."
+  },
+  "develop_fight_card_profiles": {
+    "output": {
+      "output": "The key attributes of each fight card relevant to this project include fight order, weight classes, fight times, odds, win ratio, knockout ratio, submission ratio, and expected outcomes. These statistics will be used to create detailed profiles of individual fight cards and predict the outcomes of individual fights based on fighter and fight card statistics."
+    },
+    "description": "Create detailed profiles of individual fight cards, including their odds, fight order, and expected outcomes."
+  },
+  "develop_fighter_profiles": {
+    "output": {
+      "output": "Key attributes of each fighter in this project include: \"Win-Loss Record\", \"Fight Time\", and \"Submission Ratio\". These statistics will be grouped to calculate overall win percentages, analyze fight times for fighting styles, and determine submission rates and susceptibility. These attributes will help develop detailed profiles, supporting the analysis of fighter performance and contributing to the 'predict_fighter_outcomes' model."
+    },
+    "description": "Create detailed profiles of individual fighters, including their skills, strengths, and weaknesses."
+  },
+  "gather_data_sources": {
+    "output": {
+      "output": "Potential data sources for this research project include articles related to UFC fighters, books on mixed martial arts, videos showcasing famous fights, and expert interviews with professional MMA coaches and fighters."
+    },
+    "description": "Collect relevant data sources, including articles, books, videos, and expert interviews."
+  },
+  "predict_fighter_outcomes": {
+    "output": {
+      "output": "To predict fighter outcomes, we will use a combination of machine learning models. The 'predict_fighter_outcomes' model will utilize the developed fighter profiles from 'develop_fighter_profiles' to calculate fighter performance metrics, such as overall win percentages, fight times, and submission rates. The model will then integrate these metrics with the developed fight card profiles from 'develop_fight_card_profiles' to account for fight-specific attributes, such as fight order, weight classes, and odds. The resulting output will be a predicted outcome for each fight, taking into consideration the individual and collective strengths of the fighters involved."
+    },
+    "description": "Use statistical models to predict the outcomes of individual fights based on fighter and fight card statistics."
+  }
+}
