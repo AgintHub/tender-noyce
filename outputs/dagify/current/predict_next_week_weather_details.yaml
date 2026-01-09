@@ -1,5 +1,5 @@
-dag_type: plain_text
-description: A workflow to predict next week's weather in a given zip code
+dag_type: typed
+description: Generated workflow from UI.
 name: predict_next_week_weather
 nodes:
   clean_historical_weather_data:
@@ -9,6 +9,28 @@ nodes:
     nodes_depended_on:
     - get_historical_weather_data
     nodes_dependent_on: []
+    output_structure:
+    - description: Number of records after cleaning
+      key: cleaned_record_count
+      type: int
+    - description: Number of missing values removed
+      key: missing_value_removed
+      type: int
+    - description: List of temperature values after cleaning
+      key: temperature_values
+      type: List[float]
+    - description: List of humidity values after cleaning
+      key: humidity_values
+      type: List[float]
+    - description: List of precipitation values after cleaning
+      key: precipitation_values
+      type: List[float]
+    - description: List of wind speed values after cleaning
+      key: wind_speed_values
+      type: List[float]
+    - description: Indicates whether the cleaning process succeeded
+      key: is_cleaned
+      type: bool
     prompt: Clean and preprocess the historical weather data by handling missing values
       and normalizing the data
   format_weather_prediction:
@@ -18,6 +40,25 @@ nodes:
     nodes_depended_on:
     - predict_next_week_weather
     nodes_dependent_on: []
+    output_structure:
+    - description: List of dates for each day of the forecast
+      key: date
+      type: List[str]
+    - description: List of predicted high temperatures in degrees Celsius
+      key: high_temp
+      type: List[float]
+    - description: List of predicted low temperatures in degrees Celsius
+      key: low_temp
+      type: List[float]
+    - description: List of predicted precipitation chance as a percentage (0 to 100)
+      key: precipitation_chance
+      type: List[float]
+    - description: List of predicted precipitation amounts in millimeters
+      key: precipitation_amount
+      type: List[float]
+    - description: Human‑readable summary sentences for each day of the forecast
+      key: summary
+      type: List[str]
     prompt: Format the predicted weather data into a human-readable format, including
       temperature, precipitation, and other relevant details
   get_current_weather_data:
@@ -27,6 +68,28 @@ nodes:
     nodes_depended_on:
     - get_zip_code
     nodes_dependent_on: []
+    output_structure:
+    - description: Current air temperature in degrees Celsius
+      key: temperature_celsius
+      type: float
+    - description: Current relative humidity as a percentage (0–100)
+      key: humidity_percent
+      type: float
+    - description: Current wind speed in kilometers per hour
+      key: wind_speed_kmh
+      type: float
+    - description: Current precipitation amount in millimeters
+      key: precipitation_mm
+      type: float
+    - description: Human‑readable weather condition (e.g., "Clear", "Rain", "Snow")
+      key: condition_description
+      type: str
+    - description: Timestamp of the observation in ISO 8601 format (e.g., "2026-01-09T14:00:00Z")
+      key: observation_time
+      type: str
+    - description: Flag indicating whether the retrieved data passed validation checks
+      key: is_valid
+      type: bool
     prompt: Fetch current weather data for the given zip code from a reliable weather
       data source
   get_historical_weather_data:
@@ -36,6 +99,23 @@ nodes:
     nodes_depended_on:
     - get_zip_code
     nodes_dependent_on: []
+    output_structure:
+    - description: List of dates (YYYY-MM-DD) for which historical weather data is
+        retrieved
+      key: historical_dates
+      type: List[str]
+    - description: List of daily average temperatures (in degrees Celsius) corresponding
+        to the dates
+      key: historical_temperatures
+      type: List[float]
+    - description: List of daily precipitation amounts (in millimeters) corresponding
+        to the dates
+      key: historical_precipitation
+      type: List[float]
+    - description: Whether the retrieved historical data set passed basic integrity
+        checks
+      key: is_valid
+      type: bool
     prompt: Fetch historical weather data for the given zip code from a reliable weather
       data source
   get_zip_code:
@@ -44,6 +124,11 @@ nodes:
     name: get_zip_code
     nodes_depended_on: []
     nodes_dependent_on: []
+    output_structure:
+    - description: The ZIP code entered by the user for which the weather forecast
+        will be predicted
+      key: zip_code
+      type: str
     prompt: Enter the zip code for which you want to predict the weather
   predict_next_week_weather:
     agent: false
@@ -52,6 +137,21 @@ nodes:
     nodes_depended_on:
     - train_weather_model
     nodes_dependent_on: []
+    output_structure:
+    - description: ISO date string representing the first day of the forecast week.
+      key: week_start_date
+      type: str
+    - description: Predicted average temperature for each day of the week.
+      key: daily_temperatures
+      type: List[float]
+    - description: Predicted precipitation probability (0-100%) for each day of the
+        week.
+      key: daily_precipitation
+      type: List[float]
+    - description: Human‑readable weather description for each day (e.g., 'Sunny',
+        'Rainy').
+      key: daily_weather_descriptions
+      type: List[str]
     prompt: Use the trained model to predict the weather for the next week in the
       given zip code
   prepare_forecast_features:
@@ -62,6 +162,34 @@ nodes:
     - clean_historical_weather_data
     - get_current_weather_data
     nodes_dependent_on: []
+    output_structure:
+    - description: Average temperature over the historical period
+      key: historical_avg_temperature
+      type: float
+    - description: Standard deviation of temperature over the historical period
+      key: historical_std_temperature
+      type: float
+    - description: Total precipitation over the historical period
+      key: historical_total_precipitation
+      type: float
+    - description: Average humidity over the historical period
+      key: historical_avg_humidity
+      type: float
+    - description: Average wind speed over the historical period
+      key: historical_avg_wind_speed
+      type: float
+    - description: Current temperature reading
+      key: current_temperature
+      type: float
+    - description: Current humidity reading
+      key: current_humidity
+      type: float
+    - description: Current precipitation reading
+      key: current_precipitation
+      type: float
+    - description: Current wind speed reading
+      key: current_wind_speed
+      type: float
     prompt: Prepare the necessary features for weather forecasting, including historical
       weather patterns and current weather conditions
   train_weather_model:
@@ -71,5 +199,17 @@ nodes:
     nodes_depended_on:
     - prepare_forecast_features
     nodes_dependent_on: []
+    output_structure:
+    - description: Unique identifier or filename for the trained weather prediction
+        model
+      key: model_identifier
+      type: str
+    - description: Indicates whether the model training completed successfully
+      key: training_success
+      type: bool
+    - description: Validation accuracy (between 0 and 1) of the trained model on the
+        validation set
+      key: validation_accuracy
+      type: float
     prompt: Train a suitable machine learning model using the prepared features to
       predict next week's weather
