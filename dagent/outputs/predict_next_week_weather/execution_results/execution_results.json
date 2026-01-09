@@ -1,0 +1,232 @@
+{
+  "clean_historical_weather_data": {
+    "output": {
+      "cleaned_record_count": 10,
+      "missing_value_removed": 0,
+      "temperature_values": [
+        3.2,
+        4.1,
+        2.8,
+        5.0,
+        3.5,
+        4.0,
+        2.9,
+        3.7,
+        4.2,
+        3.8
+      ],
+      "humidity_values": [
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0
+      ],
+      "precipitation_values": [
+        0.0,
+        2.5,
+        0.0,
+        1.2,
+        0.0,
+        0.0,
+        3.0,
+        0.0,
+        0.0,
+        0.5
+      ],
+      "wind_speed_values": [
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0
+      ],
+      "is_cleaned": true
+    },
+    "description": "Clean and preprocess the historical weather data"
+  },
+  "format_weather_prediction": {
+    "output": {
+      "date": [
+        "2026-01-13",
+        "2026-01-14",
+        "2026-01-15",
+        "2026-01-16",
+        "2026-01-17",
+        "2026-01-18",
+        "2026-01-19"
+      ],
+      "high_temp": [
+        32.5,
+        30.0,
+        28.0,
+        27.5,
+        29.0,
+        31.0,
+        33.0
+      ],
+      "low_temp": [
+        27.5,
+        25.0,
+        23.0,
+        22.5,
+        24.0,
+        26.0,
+        28.0
+      ],
+      "precipitation_chance": [
+        10.0,
+        20.0,
+        30.0,
+        40.0,
+        50.0,
+        20.0,
+        10.0
+      ],
+      "precipitation_amount": [
+        10.0,
+        20.0,
+        30.0,
+        40.0,
+        50.0,
+        20.0,
+        10.0
+      ],
+      "summary": [
+        "On 2026-01-13, the temperature will be high 32.5\u00b0C and low 27.5\u00b0C with a 10% chance of precipitation (10.0 mm). It will be Sunny.",
+        "On 2026-01-14, the temperature will be high 30.0\u00b0C and low 25.0\u00b0C with a 20% chance of precipitation (20.0 mm). It will be Partly Cloudy.",
+        "On 2026-01-15, the temperature will be high 28.0\u00b0C and low 23.0\u00b0C with a 30% chance of precipitation (30.0 mm). It will be Rainy.",
+        "On 2026-01-16, the temperature will be high 27.5\u00b0C and low 22.5\u00b0C with a 40% chance of precipitation (40.0 mm). It will be Thunderstorms.",
+        "On 2026-01-17, the temperature will be high 29.0\u00b0C and low 24.0\u00b0C with a 50% chance of precipitation (50.0 mm). It will be Rainy.",
+        "On 2026-01-18, the temperature will be high 31.0\u00b0C and low 26.0\u00b0C with a 20% chance of precipitation (20.0 mm). It will be Partly Cloudy.",
+        "On 2026-01-19, the temperature will be high 33.0\u00b0C and low 28.0\u00b0C with a 10% chance of precipitation (10.0 mm). It will be Sunny."
+      ]
+    },
+    "description": "Format the predicted weather data for presentation"
+  },
+  "get_current_weather_data": {
+    "output": {
+      "temperature_celsius": 18.5,
+      "humidity_percent": 65.0,
+      "wind_speed_kmh": 12.0,
+      "precipitation_mm": 0.0,
+      "condition_description": "Partly Cloudy",
+      "observation_time": "2024-06-04T15:00:00Z",
+      "is_valid": true
+    },
+    "description": "Retrieve current weather data for the given zip code"
+  },
+  "get_historical_weather_data": {
+    "output": {
+      "historical_dates": [
+        "2026-01-01",
+        "2026-01-02",
+        "2026-01-03",
+        "2026-01-04",
+        "2026-01-05",
+        "2026-01-06",
+        "2026-01-07",
+        "2026-01-08",
+        "2026-01-09",
+        "2026-01-10"
+      ],
+      "historical_temperatures": [
+        3.2,
+        4.1,
+        2.8,
+        5.0,
+        3.5,
+        4.0,
+        2.9,
+        3.7,
+        4.2,
+        3.8
+      ],
+      "historical_precipitation": [
+        0.0,
+        2.5,
+        0.0,
+        1.2,
+        0.0,
+        0.0,
+        3.0,
+        0.0,
+        0.0,
+        0.5
+      ],
+      "is_valid": true
+    },
+    "description": "Retrieve historical weather data for the given zip code"
+  },
+  "get_zip_code": {
+    "output": {
+      "zip_code": "10001"
+    },
+    "description": "Get the zip code for which the weather needs to be predicted"
+  },
+  "predict_next_week_weather": {
+    "output": {
+      "week_start_date": "2026-01-13",
+      "daily_temperatures": [
+        32.5,
+        30.0,
+        28.0,
+        27.5,
+        29.0,
+        31.0,
+        33.0
+      ],
+      "daily_precipitation": [
+        10.0,
+        20.0,
+        30.0,
+        40.0,
+        50.0,
+        20.0,
+        10.0
+      ],
+      "daily_weather_descriptions": [
+        "Sunny",
+        "Partly Cloudy",
+        "Rainy",
+        "Thunderstorms",
+        "Rainy",
+        "Partly Cloudy",
+        "Sunny"
+      ]
+    },
+    "description": "Use the trained model to predict next week's weather"
+  },
+  "prepare_forecast_features": {
+    "output": {
+      "historical_avg_temperature": 3.92,
+      "historical_std_temperature": 0.7161,
+      "historical_total_precipitation": 7.2,
+      "historical_avg_humidity": 50.0,
+      "historical_avg_wind_speed": 5.0,
+      "current_temperature": 18.5,
+      "current_humidity": 65.0,
+      "current_precipitation": 0.0,
+      "current_wind_speed": 12.0
+    },
+    "description": "Prepare features required for weather forecasting"
+  },
+  "train_weather_model": {
+    "output": {
+      "model_identifier": "weather_prediction_model_v1.pkl",
+      "training_success": true,
+      "validation_accuracy": 0.85
+    },
+    "description": "Train a machine learning model to predict the weather"
+  }
+}
