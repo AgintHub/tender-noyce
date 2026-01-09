@@ -1,12 +1,72 @@
-dag_type: spec
+dag_type: stub
 description: Generated workflow from UI.
 name: predict_next_week_weather
 nodes:
   clean_historical_weather_data:
     agent: false
+    code_node_type: stub
     description: Retrieve historical weather data from a reliable source and transform
       it into a consistent, missing‑value‑free, and normalized dataset suitable for
       downstream machine learning training and forecasting.
+    implementation: "from pydantic import BaseModel, Field\nfrom typing import List\n\
+      \n\nclass GetHistoricalWeatherDataOutput(BaseModel):\n    \"\"\"Pydantic model\
+      \ for get_historical_weather_data node outputs.\"\"\"\n    historical_dates:\
+      \ List[str] = (\n        Field(..., description=\"List of dates (YYYY-MM-DD)\
+      \ for which historical weather data is retrieved\")\n    )\n    historical_temperatures:\
+      \ List[float] = (\n        Field(..., description=\"List of daily average temperatures\
+      \ (in degrees Celsius) corresponding to the dates\")\n    )\n    historical_precipitation:\
+      \ List[float] = (\n        Field(..., description=\"List of daily precipitation\
+      \ amounts (in millimeters) corresponding to the dates\")\n    )\n    is_valid:\
+      \ bool = (\n        Field(..., description=\"Whether the retrieved historical\
+      \ data set passed basic integrity checks\")\n    )\n\n\nclass CleanHistoricalWeatherDataOutput(BaseModel):\n\
+      \    \"\"\"Pydantic model for clean_historical_weather_data node outputs.\"\"\
+      \"\n    cleaned_record_count: int = (\n        Field(..., description=\"Number\
+      \ of records after cleaning\")\n    )\n    missing_value_removed: int = (\n\
+      \        Field(..., description=\"Number of missing values removed\")\n    )\n\
+      \    temperature_values: List[float] = (\n        Field(..., description=\"\
+      List of temperature values after cleaning\")\n    )\n    humidity_values: List[float]\
+      \ = (\n        Field(..., description=\"List of humidity values after cleaning\"\
+      )\n    )\n    precipitation_values: List[float] = (\n        Field(..., description=\"\
+      List of precipitation values after cleaning\")\n    )\n    wind_speed_values:\
+      \ List[float] = (\n        Field(..., description=\"List of wind speed values\
+      \ after cleaning\")\n    )\n    is_cleaned: bool = (\n        Field(..., description=\"\
+      Indicates whether the cleaning process succeeded\")\n    )\n\n\ndef clean_historical_weather_data(get_historical_weather_data_input:\
+      \ GetHistoricalWeatherDataOutput, **kwargs) -> CleanHistoricalWeatherDataOutput:\n\
+      \    \"\"\"\n    Clean and preprocess historical weather data by removing missing\
+      \ values,\n    normalizing numeric fields, and calculating derived metrics.\n\
+      \n    Parameters\n    ----------\n    historical_dates : List[str]\n       \
+      \ List of dates (YYYY-MM-DD) for which historical weather data is\n        retrieved.\n\
+      \    historical_temperatures : List[float]\n        List of daily average temperatures\
+      \ (in degrees Celsius)\n        corresponding to the dates.\n    historical_precipitation\
+      \ : List[float]\n        List of daily precipitation amounts (in millimeters)\
+      \ corresponding\n        to the dates.\n    historical_humidity : List[float]\n\
+      \        List of daily average relative humidity percentages (0–100)\n     \
+      \   corresponding to the dates.\n    historical_wind_speed : List[float]\n \
+      \       List of daily average wind speeds (in km/h) corresponding to the\n \
+      \       dates.\n    is_valid : bool\n        Flag indicating whether the retrieved\
+      \ data set passed basic\n        integrity checks.\n\n    Returns\n    -------\n\
+      \    Dict[str, Union[int, bool, List[float]]]\n        Dictionary containing\
+      \ cleaned record counts, number of missing\n        values removed, normalized\
+      \ temperature, humidity, precipitation, and\n        wind speed arrays, and\
+      \ a success flag.\n\n    Raises\n    ------\n    ValueError\n        Raised\
+      \ if `is_valid` is False or if any input lists have mismatched\n        lengths.\n\
+      \n    Examples\n    --------\n    >>> clean_historical_weather_data(\n\n   \
+      \ ...     historical_dates=['2025-12-01', '2025-12-02', '2025-12-03'],\n\n \
+      \   ...     historical_temperatures=[-2.5, None, 0.0],\n\n    ...     historical_precipitation=[5.0,\
+      \ 0.0, None],\n\n    ...     historical_humidity=[80.0, 75.0, 78.0],\n\n   \
+      \ ...     historical_wind_speed=[15.0, 10.0, 12.0],\n\n    ...     is_valid=True\n\
+      \n    >>> )\n    {\n      'cleaned_record_count': 2,\n      'missing_value_removed':\
+      \ 2,\n      'temperature_values': [-2.5, 0.0],\n      'humidity_values': [80.0,\
+      \ 75.0, 78.0],\n      'precipitation_values': [5.0, 0.0],\n      'wind_speed_values':\
+      \ [15.0, 10.0, 12.0],\n      'is_cleaned': True\n    }\n\n    >>> clean_historical_weather_data(\n\
+      \n    ...     historical_dates=['2025-12-01'],\n\n    ...     historical_temperatures=[None],\n\
+      \n    ...     historical_precipitation=[None],\n\n    ...     historical_humidity=[None],\n\
+      \n    ...     historical_wind_speed=[None],\n\n    ...     is_valid=False\n\n\
+      \    >>> )\n    ValueError: Retrieved historical data failed basic integrity\
+      \ checks.\n\n    \"\"\"\n    return CleanHistoricalWeatherDataOutput(\n    \
+      \    cleaned_record_count=0,\n        missing_value_removed=0,\n        temperature_values=[],\n\
+      \        humidity_values=[],\n        precipitation_values=[],\n        wind_speed_values=[],\n\
+      \        is_cleaned=False,\n    )"
     name: clean_historical_weather_data
     nodes_depended_on:
     - get_historical_weather_data
@@ -128,11 +188,70 @@ nodes:
           values, normalizing numeric fields, and calculating derived metrics.
     prompt: Clean and preprocess the historical weather data by handling missing values
       and normalizing the data
+    shims: []
   format_weather_prediction:
     agent: false
+    code_node_type: stub
     description: Takes the raw forecast from the weather model and transforms it into
       a structured, presentation‑ready format, adding derived high/low temperatures,
       estimated precipitation amounts, and concise summary sentences for each day.
+    implementation: "from pydantic import BaseModel, Field\nfrom typing import List\n\
+      \n\nclass PredictNextWeekWeatherOutput(BaseModel):\n    \"\"\"Pydantic model\
+      \ for predict_next_week_weather node outputs.\"\"\"\n    week_start_date: str\
+      \ = (\n        Field(..., description=\"ISO date string representing the first\
+      \ day of the forecast week.\")\n    )\n    daily_temperatures: float = (\n \
+      \       Field(..., description=\"Predicted average temperature for each day\
+      \ of the week.\")\n    )\n    daily_precipitation: float = (\n        Field(...,\
+      \ description=\"Predicted precipitation probability (0\\u2011100%) for each\
+      \ day of the week.\")\n    )\n    daily_weather_descriptions: str = (\n    \
+      \    Field(..., description=\"Human\\u2011readable weather description for each\
+      \ day (e.g., 'Sunny', 'Rainy').\")\n    )\n\n\nclass FormatWeatherPredictionOutput(BaseModel):\n\
+      \    \"\"\"Pydantic model for format_weather_prediction node outputs.\"\"\"\n\
+      \    date: List[str] = (\n        Field(..., description=\"ISO date string (YYYY-MM-DD)\
+      \ for each forecast day.\")\n    )\n    high_temp: List[float] = (\n       \
+      \ Field(..., description=\"Predicted high temperature for each day (\\u00b0C).\"\
+      )\n    )\n    low_temp: List[float] = (\n        Field(..., description=\"Predicted\
+      \ low temperature for each day (\\u00b0C).\")\n    )\n    precipitation_chance:\
+      \ List[float] = (\n        Field(..., description=\"Probability of precipitation\
+      \ (0\\u2013100%).\")\n    )\n    precipitation_amount: List[float] = (\n   \
+      \     Field(..., description=\"Estimated precipitation volume in millimeters.\"\
+      )\n    )\n    summary: List[str] = (\n        Field(..., description=\"Human\\\
+      u2011readable summary sentence for each day.\")\n    )\n\n\ndef format_weather_prediction(predict_next_week_weather_input:\
+      \ PredictNextWeekWeatherOutput, **kwargs) -> FormatWeatherPredictionOutput:\n\
+      \    \"\"\"\n    Format raw weather predictions into a structured report with\
+      \ derived metrics\n    and summaries.\n\n    Parameters\n    ----------\n  \
+      \  week_start_date : str\n        ISO date string of the first day of the forecast\
+      \ week.\n    daily_temperatures : List[float]\n        Predicted average temperature\
+      \ (°C) for each day of the week.\n    daily_precipitation : List[float]\n  \
+      \      Predicted precipitation probability (0–100%) for each day.\n    daily_weather_descriptions\
+      \ : List[str]\n        Human‑readable weather description for each day (e.g.,\
+      \ 'Sunny').\n\n    Returns\n    -------\n    Dict[str, List[Union[str, float]]]\n\
+      \        Dictionary containing dates, high/low temps, precipitation chance,\n\
+      \        estimated amount, and daily summary sentences.\n\n    Raises\n    ------\n\
+      \    ValueError\n        If the three input lists have different lengths.\n\
+      \    TypeError\n        If any input is not of the expected type.\n\n    Examples\n\
+      \    --------\n    >>> week_start_date = '2026-01-09',\n    >>> daily_temperatures\
+      \ = [5.0, 6.0, 7.0, 4.5, 8.0, 6.5, 7.5],\n    >>> daily_precipitation = [10.0,\
+      \ 20.0, 0.0, 50.0, 5.0, 30.0, 15.0],\n    >>> daily_weather_descriptions = ['Sunny',\
+      \ 'Cloudy', 'Clear', 'Rainy',\n    'Sunny', 'Rainy', 'Cloudy'],\n    >>> output\
+      \ = format_weather_prediction(\n    ...     week_start_date,\n    ...     daily_temperatures,\n\
+      \    ...     daily_precipitation,\n    ...     daily_weather_descriptions\n\
+      \    >>> )\n    {\n      'date': ['2026-01-09', '2026-01-10', '2026-01-11',\
+      \ '2026-01-12',\n    '2026-01-13', '2026-01-14', '2026-01-15'],\n      'high_temp':\
+      \ [10.0, 11.0, 12.0, 9.5, 13.0, 11.5, 12.5],\n      'low_temp': [0.0, 1.0, 2.0,\
+      \ -0.5, 3.0, 1.5, 2.5],\n      'precipitation_chance': [10.0, 20.0, 0.0, 50.0,\
+      \ 5.0, 30.0, 15.0],\n      'precipitation_amount': [1.0, 2.0, 0.0, 5.0, 0.5,\
+      \ 3.0, 1.5],\n      'summary': [\n        'Sunny with a high of 10.0°C and a\
+      \ low of 0.0°C. Precipitation chance\n    10%.',\n        'Cloudy with a high\
+      \ of 11.0°C and a low of 1.0°C. Precipitation chance\n    20%.',\n        'Clear\
+      \ day, high 12.0°C, low 2.0°C. No precipitation expected.',\n        'Rainy\
+      \ forecast; high 9.5°C, low -0.5°C. 50% chance of rain.',\n        'Sunny again,\
+      \ high 13.0°C, low 3.0°C. Light chance of precipitation\n    (5%).',\n     \
+      \   'Rainy conditions, high 11.5°C, low 1.5°C. 30% chance of rain.',\n     \
+      \   'Cloudy with high 12.5°C, low 2.5°C. 15% chance of precipitation.'\n   \
+      \   ]\n    }\n\n    \"\"\"\n    return FormatWeatherPredictionOutput(\n    \
+      \    date=[],\n        high_temp=[],\n        low_temp=[],\n        precipitation_chance=[],\n\
+      \        precipitation_amount=[],\n        summary=[],\n    )"
     name: format_weather_prediction
     nodes_depended_on:
     - predict_next_week_weather
@@ -212,9 +331,47 @@ nodes:
           metrics and summaries.
     prompt: Format the predicted weather data into a human-readable format, including
       temperature, precipitation, and other relevant details
+    shims: []
   get_current_weather_data:
     agent: false
+    code_node_type: stub
     description: Retrieve current weather data for the given zip code
+    implementation: "from pydantic import BaseModel, Field\n\n\nclass GetZipCodeOutput(BaseModel):\n\
+      \    \"\"\"Pydantic model for get_zip_code node outputs.\"\"\"\n    zip_code:\
+      \ str = (\n        Field(..., description=\"The ZIP code entered by the user\
+      \ for which the weather forecast will be predicted\")\n    )\n\n\nclass GetCurrentWeatherDataOutput(BaseModel):\n\
+      \    \"\"\"Pydantic model for get_current_weather_data node outputs.\"\"\"\n\
+      \    temperature_celsius: float = (\n        Field(..., description=\"Current\
+      \ air temperature in degrees Celsius\")\n    )\n    humidity_percent: float\
+      \ = (\n        Field(..., description=\"Current relative humidity as a percentage\
+      \ (0\\u2013100)\")\n    )\n    wind_speed_kmh: float = (\n        Field(...,\
+      \ description=\"Current wind speed in kilometers per hour\")\n    )\n    precipitation_mm:\
+      \ float = (\n        Field(..., description=\"Current precipitation amount in\
+      \ millimeters\")\n    )\n    condition_description: str = (\n        Field(...,\
+      \ description=\"Human\\u2011readable weather condition (e.g., \\\"Clear\\\"\
+      , \\\"Rain\\\", \\\"Snow\\\")\")\n    )\n    observation_time: str = (\n   \
+      \     Field(..., description=\"Timestamp of the observation in ISO 8601 format\
+      \ (e.g., \\\"2026-01-09T14:00:00Z\\\")\")\n    )\n    is_valid: bool = (\n \
+      \       Field(..., description=\"Flag indicating whether the retrieved data\
+      \ passed validation checks\")\n    )\n\n\ndef get_current_weather_data(get_zip_code_input:\
+      \ GetZipCodeOutput, **kwargs) -> GetCurrentWeatherDataOutput:\n    \"\"\"\n\
+      \    Retrieves current weather data for a specified ZIP code from a reliable\n\
+      \    external weather API.\n\n    Parameters\n    ----------\n    zip_code :\
+      \ str\n        A 5‑digit U.S. ZIP code for which to obtain the weather data.\n\
+      \n    Returns\n    -------\n    dict\n        Dictionary containing current\
+      \ temperature, humidity, wind speed,\n        precipitation, condition description,\
+      \ observation timestamp, and a\n        validation flag.\n\n    Raises\n   \
+      \ ------\n    ValueError\n        Raised if the supplied `zip_code` is empty\
+      \ or not a valid 5‑digit\n        string.\n    RuntimeError\n        Raised\
+      \ when the external API request fails or returns invalid data.\n\n    Examples\n\
+      \    --------\n    >>> weather = get_current_weather_data('10001')\n    >>>\
+      \ print(weather['temperature_celsius'])\n    >>> print(weather['is_valid'])\n\
+      \    4.7\n    True\n\n    >>> try:\n    ...     get_current_weather_data('ABCDE')\n\
+      \    >>> except ValueError as e:\n    ...     print(e)\n    \"zip_code must\
+      \ be a 5‑digit string\"\n\n    \"\"\"\n    return GetCurrentWeatherDataOutput(\n\
+      \        temperature_celsius=0.0,\n        humidity_percent=0.0,\n        wind_speed_kmh=0.0,\n\
+      \        precipitation_mm=0.0,\n        condition_description=\"\",\n      \
+      \  observation_time=\"\",\n        is_valid=False,\n    )"
     name: get_current_weather_data
     nodes_depended_on:
     - get_zip_code
@@ -280,9 +437,48 @@ nodes:
           external weather API.
     prompt: Fetch current weather data for the given zip code from a reliable weather
       data source
+    shims: []
   get_historical_weather_data:
     agent: false
+    code_node_type: stub
     description: Retrieve historical weather data for the given zip code
+    implementation: "from pydantic import BaseModel, Field\nfrom typing import List\n\
+      \n\nclass GetZipCodeOutput(BaseModel):\n    \"\"\"Pydantic model for get_zip_code\
+      \ node outputs.\"\"\"\n    zip_code: str = (\n        Field(..., description=\"\
+      The ZIP code entered by the user for which the weather forecast will be predicted\"\
+      )\n    )\n\n\nclass GetHistoricalWeatherDataOutput(BaseModel):\n    \"\"\"Pydantic\
+      \ model for get_historical_weather_data node outputs.\"\"\"\n    historical_dates:\
+      \ List[str] = (\n        Field(..., description=\"List of dates (YYYY-MM-DD)\
+      \ for which historical weather data is retrieved\")\n    )\n    historical_temperatures:\
+      \ List[float] = (\n        Field(..., description=\"List of daily average temperatures\
+      \ (in degrees Celsius) corresponding to the dates\")\n    )\n    historical_precipitation:\
+      \ List[float] = (\n        Field(..., description=\"List of daily precipitation\
+      \ amounts (in millimeters) corresponding to the dates\")\n    )\n    is_valid:\
+      \ bool = (\n        Field(..., description=\"Whether the retrieved historical\
+      \ data set passed basic integrity checks\")\n    )\n\n\ndef get_historical_weather_data(get_zip_code_input:\
+      \ GetZipCodeOutput, **kwargs) -> GetHistoricalWeatherDataOutput:\n    \"\"\"\
+      \n    Fetches historical weather data for a ZIP code and returns structured\
+      \ lists\n    of dates, temperatures, and precipitation.\n\n    Parameters\n\
+      \    ----------\n    zip_code : str\n        The ZIP code for which historical\
+      \ weather data is to be retrieved.\n        Must be a 5‑digit numeric string.\n\
+      \n    Returns\n    -------\n    Dict[str, Any]\n        A dictionary containing\
+      \ the following keys: - `historical_dates`\n        (List[str]) – dates in YYYY‑MM‑DD\
+      \ format - `historical_temperatures`\n        (List[float]) – daily average\
+      \ temperatures in Celsius -\n        `historical_precipitation` (List[float])\
+      \ – daily precipitation\n        amounts in millimeters - `is_valid` (bool)\
+      \ – flag indicating whether\n        the data passed basic validation checks\n\
+      \n    Raises\n    ------\n    ValueError\n        Raised if `zip_code` is not\
+      \ a valid 5‑digit string or if the data\n        source reports the ZIP code\
+      \ as unknown.\n    ConnectionError\n        Raised when the external weather\
+      \ API is unreachable or times out.\n    RuntimeError\n        Raised if the\
+      \ retrieved dataset is empty or malformed.\n\n    Examples\n    --------\n \
+      \   >>> data = get_historical_weather_data('90210')\n    '{'historical_dates':\
+      \ ['2026-01-01', '2026-01-02'],\n    'historical_temperatures': [12.5, 13.0],\
+      \ 'historical_precipitation': [0.0,\n    5.2], 'is_valid': True}'\n\n    >>>\
+      \ data = get_historical_weather_data('99999')\n    ValueError: ZIP code '99999'\
+      \ is invalid or not found in the data source.\n\n    \"\"\"\n    return GetHistoricalWeatherDataOutput(\n\
+      \        historical_dates=[],\n        historical_temperatures=[],\n       \
+      \ historical_precipitation=[],\n        is_valid=False,\n    )"
     name: get_historical_weather_data
     nodes_depended_on:
     - get_zip_code
@@ -352,9 +548,27 @@ nodes:
           lists of dates, temperatures, and precipitation.
     prompt: Fetch historical weather data for the given zip code from a reliable weather
       data source
+    shims: []
   get_zip_code:
     agent: false
+    code_node_type: stub
     description: Get the zip code for which the weather needs to be predicted
+    implementation: "from pydantic import BaseModel, Field\n\n\nclass GetZipCodeOutput(BaseModel):\n\
+      \    \"\"\"Pydantic model for get_zip_code node outputs.\"\"\"\n    zip_code:\
+      \ str = (\n        Field(..., description=\"The ZIP code entered by the user\
+      \ for which the weather forecast will be predicted\")\n    )\n\n\ndef get_zip_code(general_input:\
+      \ str, **kwargs) -> GetZipCodeOutput:\n    \"\"\"\n    Prompt the user for a\
+      \ ZIP code and validate the input.\n\n    Returns\n    -------\n    str\n  \
+      \      A 5‑digit US ZIP code string that will be passed to downstream\n    \
+      \    weather data nodes.\n\n    Raises\n    ------\n    ValueError\n       \
+      \ If the user input is not a 5‑digit numeric string or is otherwise\n      \
+      \  invalid.\n\n    Examples\n    --------\n    >>> def mock_input(prompt: str)\
+      \ -> str:\n    ...     return '90210'\n    >>> zip_code = get_zip_code()\n \
+      \   '90210'\n\n    >>> def mock_input(prompt: str) -> str:\n    ...     return\
+      \ 'ABC12'\n    >>> try:\n    ...     zip_code = get_zip_code()\n    >>> except\
+      \ ValueError as e:\n    ...     print(e)\n    \"Invalid ZIP code: must be a\
+      \ 5-digit numeric string\"\n\n    \"\"\"\n    return GetZipCodeOutput(\n   \
+      \     zip_code=\"\",\n    )"
     name: get_zip_code
     nodes_depended_on: []
     nodes_dependent_on: []
@@ -392,10 +606,52 @@ nodes:
           type: str
         summary: Prompt the user for a ZIP code and validate the input.
     prompt: Enter the zip code for which you want to predict the weather
+    shims: []
   predict_next_week_weather:
     agent: false
+    code_node_type: stub
     description: Use the trained machine learning model to forecast weather conditions
       for the upcoming week for a specific ZIP code.
+    implementation: "from pydantic import BaseModel, Field\n\n\nclass TrainWeatherModelOutput(BaseModel):\n\
+      \    \"\"\"Pydantic model for train_weather_model node outputs.\"\"\"\n    model_identifier:\
+      \ str = (\n        Field(..., description=\"Unique identifier or filename for\
+      \ the trained weather prediction model\")\n    )\n    training_success: bool\
+      \ = (\n        Field(..., description=\"Indicates whether the model training\
+      \ completed successfully\")\n    )\n    validation_accuracy: float = (\n   \
+      \     Field(..., description=\"Validation accuracy (between 0 and 1) of the\
+      \ trained model on the validation set\")\n    )\n\n\nclass PredictNextWeekWeatherOutput(BaseModel):\n\
+      \    \"\"\"Pydantic model for predict_next_week_weather node outputs.\"\"\"\n\
+      \    week_start_date: str = (\n        Field(..., description=\"ISO date string\
+      \ representing the first day of the forecast week.\")\n    )\n    daily_temperatures:\
+      \ float = (\n        Field(..., description=\"Predicted average temperature\
+      \ for each day of the week.\")\n    )\n    daily_precipitation: float = (\n\
+      \        Field(..., description=\"Predicted precipitation probability (0\\u2011100%)\
+      \ for each day of the week.\")\n    )\n    daily_weather_descriptions: str =\
+      \ (\n        Field(..., description=\"Human\\u2011readable weather description\
+      \ for each day (e.g., 'Sunny', 'Rainy').\")\n    )\n\n\ndef predict_next_week_weather(train_weather_model_input:\
+      \ TrainWeatherModelOutput, **kwargs) -> PredictNextWeekWeatherOutput:\n    \"\
+      \"\"\n    Predict the next week’s weather using a trained machine learning model.\n\
+      \n    Parameters\n    ----------\n    zip_code : str\n        The 5‑digit ZIP\
+      \ code for which the forecast should be generated.\n    model_identifier : str\n\
+      \        Filename or unique ID of the trained weather prediction model\n   \
+      \     returned by `train_weather_model`.\n\n    Returns\n    -------\n    dict\n\
+      \        Dictionary containing the week start date, daily temperatures, daily\n\
+      \        precipitation probabilities, and daily weather descriptions.\n\n  \
+      \  Raises\n    ------\n    FileNotFoundError\n        If the model file identified\
+      \ by `model_identifier` cannot be\n        located.\n    ValueError\n      \
+      \  If the provided `zip_code` is not a 5‑digit string or the model\n       \
+      \ fails to produce predictions.\n    RuntimeError\n        If the prediction\
+      \ process encounters unexpected data issues.\n\n    Examples\n    --------\n\
+      \    >>> forecast = predict_next_week_weather(zip_code='02115',\n    model_identifier='model_2026_01.pickle')\n\
+      \    >>> print(forecast['week_start_date'])\n    \"2026-01-16\"\n\n    >>> forecast\
+      \ = predict_next_week_weather(zip_code='02115',\n    model_identifier='model_2026_01.pickle')\n\
+      \    >>> print(forecast['daily_temperatures'])\n    >>> print(forecast['daily_precipitation'])\n\
+      \    >>> print(forecast['daily_weather_descriptions'])\n    [12.5, 13.0, 11.8,\
+      \ 10.2, 14.1, 13.9, 12.0]\n    [15.0, 20.5, 5.0, 0.0, 30.0, 25.0, 10.0]\n  \
+      \  ['Sunny', 'Partly Cloudy', 'Rain', 'Clear', 'Rainy', 'Cloudy', 'Sunny']\n\
+      \n    \"\"\"\n    return PredictNextWeekWeatherOutput(\n        week_start_date=\"\
+      \",\n        daily_temperatures=0.0,\n        daily_precipitation=0.0,\n   \
+      \     daily_weather_descriptions=\"\",\n    )"
     name: predict_next_week_weather
     nodes_depended_on:
     - train_weather_model
@@ -465,11 +721,96 @@ nodes:
           model.
     prompt: Use the trained model to predict the weather for the next week in the
       given zip code
+    shims: []
   prepare_forecast_features:
     agent: false
+    code_node_type: stub
     description: Collect and compute summary statistics from cleaned historical weather
       data and current weather observations to create a feature set for the forecasting
       model.
+    implementation: "from pydantic import BaseModel, Field\nfrom typing import List\n\
+      \n\nclass CleanHistoricalWeatherDataOutput(BaseModel):\n    \"\"\"Pydantic model\
+      \ for clean_historical_weather_data node outputs.\"\"\"\n    cleaned_record_count:\
+      \ int = (\n        Field(..., description=\"Number of records after cleaning\"\
+      )\n    )\n    missing_value_removed: int = (\n        Field(..., description=\"\
+      Number of missing values removed\")\n    )\n    temperature_values: List[float]\
+      \ = (\n        Field(..., description=\"List of temperature values after cleaning\"\
+      )\n    )\n    humidity_values: List[float] = (\n        Field(..., description=\"\
+      List of humidity values after cleaning\")\n    )\n    precipitation_values:\
+      \ List[float] = (\n        Field(..., description=\"List of precipitation values\
+      \ after cleaning\")\n    )\n    wind_speed_values: List[float] = (\n       \
+      \ Field(..., description=\"List of wind speed values after cleaning\")\n   \
+      \ )\n    is_cleaned: bool = (\n        Field(..., description=\"Indicates whether\
+      \ the cleaning process succeeded\")\n    )\n\n\nclass GetCurrentWeatherDataOutput(BaseModel):\n\
+      \    \"\"\"Pydantic model for get_current_weather_data node outputs.\"\"\"\n\
+      \    temperature_celsius: float = (\n        Field(..., description=\"Current\
+      \ air temperature in degrees Celsius\")\n    )\n    humidity_percent: float\
+      \ = (\n        Field(..., description=\"Current relative humidity as a percentage\
+      \ (0\\u2013100)\")\n    )\n    wind_speed_kmh: float = (\n        Field(...,\
+      \ description=\"Current wind speed in kilometers per hour\")\n    )\n    precipitation_mm:\
+      \ float = (\n        Field(..., description=\"Current precipitation amount in\
+      \ millimeters\")\n    )\n    condition_description: str = (\n        Field(...,\
+      \ description=\"Human\\u2011readable weather condition (e.g., \\\"Clear\\\"\
+      , \\\"Rain\\\", \\\"Snow\\\")\")\n    )\n    observation_time: str = (\n   \
+      \     Field(..., description=\"Timestamp of the observation in ISO 8601 format\
+      \ (e.g., \\\"2026-01-09T14:00:00Z\\\")\")\n    )\n    is_valid: bool = (\n \
+      \       Field(..., description=\"Flag indicating whether the retrieved data\
+      \ passed validation checks\")\n    )\n\n\nclass PrepareForecastFeaturesOutput(BaseModel):\n\
+      \    \"\"\"Pydantic model for prepare_forecast_features node outputs.\"\"\"\n\
+      \    historical_avg_temperature: float = (\n        Field(..., description=\"\
+      Average temperature over the historical period\")\n    )\n    historical_std_temperature:\
+      \ float = (\n        Field(..., description=\"Standard deviation of temperature\
+      \ over the historical period\")\n    )\n    historical_total_precipitation:\
+      \ float = (\n        Field(..., description=\"Total precipitation over the historical\
+      \ period\")\n    )\n    historical_avg_humidity: float = (\n        Field(...,\
+      \ description=\"Average humidity over the historical period\")\n    )\n    historical_avg_wind_speed:\
+      \ float = (\n        Field(..., description=\"Average wind speed over the historical\
+      \ period\")\n    )\n    current_temperature: float = (\n        Field(..., description=\"\
+      Current temperature reading\")\n    )\n    current_humidity: float = Field(...,\
+      \ description=\"Current humidity reading\")\n    current_precipitation: float\
+      \ = (\n        Field(..., description=\"Current precipitation reading\")\n \
+      \   )\n    current_wind_speed: float = (\n        Field(..., description=\"\
+      Current wind speed reading\")\n    )\n\n\ndef prepare_forecast_features(clean_historical_weather_data_input:\
+      \ CleanHistoricalWeatherDataOutput, get_current_weather_data_input: GetCurrentWeatherDataOutput,\
+      \ **kwargs) -> PrepareForecastFeaturesOutput:\n    \"\"\"\n    Generate summary\
+      \ statistics from cleaned historical weather data and current\n    observations\
+      \ to produce a feature dictionary for forecasting.\n\n    Parameters\n    ----------\n\
+      \    cleaned_data : dict\n        Dictionary returned by `clean_historical_weather_data`.\
+      \ Must contain\n        the keys `temperature_values`, `humidity_values`,\n\
+      \        `precipitation_values`, `wind_speed_values`, and `is_cleaned`.\n  \
+      \  current_data : dict\n        Dictionary returned by `get_current_weather_data`.\
+      \ Must contain the\n        keys `temperature_celsius`, `humidity_percent`,\
+      \ `wind_speed_kmh`,\n        `precipitation_mm`, and `is_valid`.\n\n    Returns\n\
+      \    -------\n    dict\n        A dictionary with keys: - `historical_avg_temperature`,\n\
+      \        `historical_std_temperature`, `historical_total_precipitation`, -\n\
+      \        `historical_avg_humidity`, `historical_avg_wind_speed`, -\n       \
+      \ `current_temperature`, `current_humidity`, `current_precipitation`,\n    \
+      \    `current_wind_speed`.\n\n    Raises\n    ------\n    ValueError\n     \
+      \   If any required field is missing or if `cleaned_data['is_cleaned']`\n  \
+      \      or `current_data['is_valid']` is False.\n\n    Examples\n    --------\n\
+      \    >>> cleaned_data = {\n    ...     'cleaned_record_count': 3,\n    ... \
+      \    'missing_value_removed': 0,\n    ...     'temperature_values': [20.0, 21.5,\
+      \ 19.0],\n    ...     'humidity_values': [60.0, 55.0, 65.0],\n    ...     'precipitation_values':\
+      \ [5.0, 0.0, 2.0],\n    ...     'wind_speed_values': [15.0, 12.0, 18.0],\n \
+      \   ...     'is_cleaned': True\n    >>> } \n    >>> current_data = {\n    ...\
+      \     'temperature_celsius': 22.3,\n    ...     'humidity_percent': 58.0,\n\
+      \    ...     'wind_speed_kmh': 12.0,\n    ...     'precipitation_mm': 0.0,\n\
+      \    ...     'condition_description': 'Clear',\n    ...     'observation_time':\
+      \ '2026-01-09T14:00:00Z',\n    ...     'is_valid': True\n    >>> } \n    >>>\
+      \ features = prepare_forecast_features(cleaned_data, current_data)\n    {\n\
+      \      'historical_avg_temperature': 20.166666666666668,\n      'historical_std_temperature':\
+      \ 1.540309513061559,\n      'historical_total_precipitation': 7.0,\n      'historical_avg_humidity':\
+      \ 60.0,\n      'historical_avg_wind_speed': 15.0,\n      'current_temperature':\
+      \ 22.3,\n      'current_humidity': 58.0,\n      'current_precipitation': 0.0,\n\
+      \      'current_wind_speed': 12.0\n    }\n\n    >>> cleaned_data = {'is_cleaned':\
+      \ False}\n    >>> current_data = {'is_valid': True}\n    >>> prepare_forecast_features(cleaned_data,\
+      \ current_data)\n    ValueError: cleaned_data is not cleaned or missing required\
+      \ fields.\n\n    \"\"\"\n    return PrepareForecastFeaturesOutput(\n       \
+      \ historical_avg_temperature=0.0,\n        historical_std_temperature=0.0,\n\
+      \        historical_total_precipitation=0.0,\n        historical_avg_humidity=0.0,\n\
+      \        historical_avg_wind_speed=0.0,\n        current_temperature=0.0,\n\
+      \        current_humidity=0.0,\n        current_precipitation=0.0,\n       \
+      \ current_wind_speed=0.0,\n    )"
     name: prepare_forecast_features
     nodes_depended_on:
     - clean_historical_weather_data
@@ -567,9 +908,69 @@ nodes:
           and current observations to produce a feature dictionary for forecasting.
     prompt: Prepare the necessary features for weather forecasting, including historical
       weather patterns and current weather conditions
+    shims: []
   train_weather_model:
     agent: false
+    code_node_type: stub
     description: Train a machine learning model to predict the weather
+    implementation: "from pydantic import BaseModel, Field\n\n\nclass PrepareForecastFeaturesOutput(BaseModel):\n\
+      \    \"\"\"Pydantic model for prepare_forecast_features node outputs.\"\"\"\n\
+      \    historical_avg_temperature: float = (\n        Field(..., description=\"\
+      Average temperature over the historical period\")\n    )\n    historical_std_temperature:\
+      \ float = (\n        Field(..., description=\"Standard deviation of temperature\
+      \ over the historical period\")\n    )\n    historical_total_precipitation:\
+      \ float = (\n        Field(..., description=\"Total precipitation over the historical\
+      \ period\")\n    )\n    historical_avg_humidity: float = (\n        Field(...,\
+      \ description=\"Average humidity over the historical period\")\n    )\n    historical_avg_wind_speed:\
+      \ float = (\n        Field(..., description=\"Average wind speed over the historical\
+      \ period\")\n    )\n    current_temperature: float = (\n        Field(..., description=\"\
+      Current temperature reading\")\n    )\n    current_humidity: float = Field(...,\
+      \ description=\"Current humidity reading\")\n    current_precipitation: float\
+      \ = (\n        Field(..., description=\"Current precipitation reading\")\n \
+      \   )\n    current_wind_speed: float = (\n        Field(..., description=\"\
+      Current wind speed reading\")\n    )\n\n\nclass TrainWeatherModelOutput(BaseModel):\n\
+      \    \"\"\"Pydantic model for train_weather_model node outputs.\"\"\"\n    model_identifier:\
+      \ str = (\n        Field(..., description=\"Unique identifier or filename for\
+      \ the trained weather prediction model\")\n    )\n    training_success: bool\
+      \ = (\n        Field(..., description=\"Indicates whether the model training\
+      \ completed successfully\")\n    )\n    validation_accuracy: float = (\n   \
+      \     Field(..., description=\"Validation accuracy (between 0 and 1) of the\
+      \ trained model on the validation set\")\n    )\n\n\ndef train_weather_model(prepare_forecast_features_input:\
+      \ PrepareForecastFeaturesOutput, **kwargs) -> TrainWeatherModelOutput:\n   \
+      \ \"\"\"\n    Trains a machine‑learning model for next‑week weather prediction.\n\
+      \n    Parameters\n    ----------\n    historical_avg_temperature : float\n \
+      \       Average temperature over the historical period (°C).\n    historical_std_temperature\
+      \ : float\n        Standard deviation of temperature over the historical period\
+      \ (°C).\n    historical_total_precipitation : float\n        Total precipitation\
+      \ over the historical period (mm).\n    historical_avg_humidity : float\n  \
+      \      Average humidity over the historical period (%).\n    historical_avg_wind_speed\
+      \ : float\n        Average wind speed over the historical period (km/h).\n \
+      \   current_temperature : float\n        Current temperature reading (°C).\n\
+      \    current_humidity : float\n        Current humidity reading (%).\n    current_precipitation\
+      \ : float\n        Current precipitation reading (mm).\n    current_wind_speed\
+      \ : float\n        Current wind speed reading (km/h).\n\n    Returns\n    -------\n\
+      \    dict[str, Any]\n        A dictionary containing the trained model identifier,\
+      \ a boolean flag\n        indicating training success, and a float validation\
+      \ accuracy.\n\n    Raises\n    ------\n    ValueError\n        Raised if any\
+      \ input feature is missing or out of expected bounds.\n    RuntimeError\n  \
+      \      Raised if the training algorithm fails to converge.\n    IOError\n  \
+      \      Raised if the model cannot be serialized to disk.\n\n    Examples\n \
+      \   --------\n    >>> model_info = train_weather_model(\n    ...     historical_avg_temperature=20.5,\n\
+      \    ...     historical_std_temperature=5.2,\n    ...     historical_total_precipitation=120.0,\n\
+      \    ...     historical_avg_humidity=60.0,\n    ...     historical_avg_wind_speed=15.0,\n\
+      \    ...     current_temperature=22.0,\n    ...     current_humidity=55.0,\n\
+      \    ...     current_precipitation=0.0,\n    ...     current_wind_speed=10.0\n\
+      \    >>> )\n    {'model_identifier': 'weather_model_v1.pkl', 'training_success':\
+      \ True,\n    'validation_accuracy': 0.87}\n\n    >>> # Using an intentionally\
+      \ bad input to trigger an error\n    >>> train_weather_model(\n    ...     historical_avg_temperature=None,\n\
+      \    ...     historical_std_temperature=5.2,\n    ...     historical_total_precipitation=120.0,\n\
+      \    ...     historical_avg_humidity=60.0,\n    ...     historical_avg_wind_speed=15.0,\n\
+      \    ...     current_temperature=22.0,\n    ...     current_humidity=55.0,\n\
+      \    ...     current_precipitation=0.0,\n    ...     current_wind_speed=10.0\n\
+      \    >>> )\n    ValueError: historical_avg_temperature must be a float and cannot\
+      \ be None\n\n    \"\"\"\n    return TrainWeatherModelOutput(\n        model_identifier=\"\
+      \",\n        training_success=False,\n        validation_accuracy=0.0,\n   \
+      \ )"
     name: train_weather_model
     nodes_depended_on:
     - prepare_forecast_features
@@ -664,3 +1065,4 @@ nodes:
         summary: Trains a machine‑learning model for next‑week weather prediction.
     prompt: Train a suitable machine learning model using the prepared features to
       predict next week's weather
+    shims: []
